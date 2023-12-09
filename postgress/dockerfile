@@ -1,6 +1,10 @@
 FROM postgres:latest
-ENV POSTGRES_DB=mydatabase
-ENV POSTGRES_USER=myuser
-ENV POSTGRES_PASSWORD=mypassword
+# https://hub.docker.com/_/postgres
+ENV POSTGRES_DB=db
+ENV POSTGRES_USER=admin
+ENV POSTGRES_PASSWORD=admin
+ENV DATABASE_HOST=127.0.0.1
 EXPOSE 5432
 CMD ["postgres"]
+#COPY postgresql.conf /etc/postgresql/postgresql.conf
+#CMD ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]

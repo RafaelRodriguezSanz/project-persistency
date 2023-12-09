@@ -1,4 +1,0 @@
-FROM cassandra:latest
-EXPOSE 9042
-# COPY cassandra.yaml /etc/cassandra/cassandra.yaml
-CMD ["cassandra", "-f"]

@@ -1,0 +1,8 @@
+FROM redpandadata/redpanda:latest
+EXPOSE 18081
+EXPOSE 18082
+EXPOSE 19092
+EXPOSE 9644
+EXPOSE 9092
+EXPOSE 8081
+CMD ["redpanda", "start", "--overprovisioned", "--smp", "1", "--memory","1G", "--reserve-memory", "0M", "--node-id", "0", "--check=false"]
