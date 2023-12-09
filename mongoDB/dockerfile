@@ -1,0 +1,7 @@
+FROM mongo:latest
+WORKDIR /usr/src/app
+# COPY ./mongodb.conf /etc/mongod.conf
+ENV MONGO_INITDB_ROOT_USERNAME=admin
+ENV MONGO_INITDB_ROOT_PASSWORD=admin
+EXPOSE 27017
+CMD ["mongod"]

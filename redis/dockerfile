@@ -1,3 +1,4 @@
-FROM redis:latest
+FROM redis:alpine
+ENV REDIS_PASSWORD admin123
 EXPOSE 6379
-CMD ["redis-server"]
+CMD ["sh", "-c", "exec redis-server --requirepass \"$REDIS_PASSWORD\""]
