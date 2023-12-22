@@ -1,0 +1,49 @@
+name: Release Workflow
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Release Version
+        if: >
+          github.event.pull_request.merged == true &&
+          github.event.pull_request.base.ref == 'master' &&
+          startsWith(github.event.pull_request.head.ref, 'release/')
+
+        run: |
+          # Configurar el token de acceso personal directamente en los comandos de Git
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+          VERSION=$(echo ${{ github.event.pull_request.head.ref }} | grep -oP 'release/\d+\.\d+\.\d+')
+
+          # Crear un tag y generar una versión
+          git tag $VERSION
+          git push origin $VERSION
+
+          # Crear una release utilizando la API de GitHub
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${{ github.repository }}/releases" \
+            -d "{\"tag_name\":\"$VERSION\",\"name\":\"Release $VERSION\",\"body\":\"Release $VERSION\"}"
+            
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
