@@ -4,7 +4,10 @@ ENV POSTGRES_DB=db
 ENV POSTGRES_USER=admin
 ENV POSTGRES_PASSWORD=admin
 ENV DATABASE_HOST=127.0.0.1
+
+COPY init-user-db.sh.sh /docker-entrypoint-initdb.d/init-user-db.sh.sh 
+COPY ./init.sql /docker-entrypoint-initdb.d/init.sql
+RUN chmod +x /docker-entrypoint-initdb.d/init-user-db.sh.sh
+
 EXPOSE 5432
-CMD ["postgres"]
-#COPY postgresql.conf /etc/postgresql/postgresql.conf
-#CMD ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+VOLUME [ "/init.sql" ]
